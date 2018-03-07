@@ -1,0 +1,5 @@
+﻿l_english:
+ black_hole_initializer_NAME:0 "The Void"
+ black_hole_initializer_DESC:0 "You start on a planet around a black hole.\n\n$system_initializer_DESC$"
+ harmony_initializer_NAME:0 "Harmony"
+ harmony_initializer_DESC:0 "You start on a planet with a ring, orbiting a violet star.\n\n$system_initializer_DESC$"

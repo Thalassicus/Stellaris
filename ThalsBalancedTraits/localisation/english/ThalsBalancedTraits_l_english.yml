@@ -1,0 +1,18 @@
+﻿l_english:
+
+ trait_ruler_welcoming:0 "Welcoming"
+ trait_ruler_welcoming_desc:1 "This leader encourages immigration from other empires."
+ leader_trait_industrialist:0 "Industrialist"
+ leader_trait_industrialist_desc:1 "This leader has a firm grip on the means of production."
+ leader_trait_frontier_spirit:0 "Frontier Spirit"
+ leader_trait_frontier_spirit_desc:1 "This leader desires to expand the borders of civilization."
+ leader_trait_investor:0 "Investor"
+ leader_trait_investor_desc:1 "This leader is a shrewd economist, capable of maximizing financial potential."
+ leader_trait_security_expert:0 "Security Expert"
+ leader_trait_security_expert_desc:1 "This leader emphasizes planetary safety and stability."
+ leader_trait_champion_of_the_people:0 "Champion of the People"
+ leader_trait_champion_of_the_people_desc:1 "This leader appears to genuinely care about their subjects."
+ leader_trait_architectural_interest:0 "Industrialist"
+ leader_trait_architectural_interest_desc:1 "This leader has a firm grip on the means of production."
+ leader_trait_environmental_engineer:0 "Frontier Spirit"
+ leader_trait_environmental_engineer_desc:1 "This leader desires to expand the borders of civilization."

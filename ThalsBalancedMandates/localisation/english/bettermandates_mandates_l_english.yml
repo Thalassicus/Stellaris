@@ -1,0 +1,34 @@
+﻿l_english:
+
+ MANDATE_mandate_orbital_researcher:0 "Orbital Researcher"
+ MANDATE_mandate_orbital_researcher_DESC:1 "Strengthen the [Root.Owner.GetName]'s research output by constructing new orbital research stations.\n\nReward:\n$mandate_influence_reward_t2$"
+ mandate_orbresearch_chain_title:0 "Orbital Research Mandate"
+ mandate_orbresearch_chain_desc:2 "[This.GetRulerTitle] [This.GetRulerName] was elected on a platform of increasing §YResearch output§! by building §YResearch Stations§! in orbit around suitable planets.\n\nReward:\n$mandate_influence_reward_t2$"
+ orbresearch_built:0 "Research Stations Built"
+ 
+ MANDATE_mandate_outpost:0 "Expansionist"
+ MANDATE_mandate_outpost_DESC:1 "Expand the [Root.Owner.GetName]'s territory by constructing a new frontier outpost.\n\nReward:\n$mandate_influence_reward_t2$"
+ mandate_outpost_chain_title:0 "Expansionist Mandate"
+ mandate_outpost_chain_desc:2 "[This.GetRulerTitle] [This.GetRulerName] was elected on a platform of expanding territory by building a §YFrontier Outpost§!.\n\nReward:\n$mandate_influence_reward_t2$"
+ outpost_stations_built:0 "Frontier Outpost Built"
+ mandate.191.title:0 "Expansionist Mandate Fulfilled"
+ mandate.191.desc:0 "As per [Root.GetRulerTitle] [Root.GetRulerName]'s mandate, we constructed a new frontier outpost."
+
+ MANDATE_mandate_defense:0 "Defender"
+ MANDATE_mandate_defense_DESC:1 "Defend the [Root.Owner.GetName]'s territory by constructing a new military station of any type.\n\nReward:\n$mandate_influence_reward_t2$"
+ mandate_defense_chain_title:0 "Defender Mandate"
+ mandate_defense_chain_desc:2 "[This.GetRulerTitle] [This.GetRulerName] was elected on a platform of defending territory by building a new §YMilitary Station§ of any type!.\n\nReward:\n$mandate_influence_reward_t2$"
+ military_stations_built:0 "Military Station Built"
+ mandate.201.title:0 "Defender Mandate Fulfilled"
+ mandate.201.desc:0 "As per [Root.GetRulerTitle] [Root.GetRulerName]'s mandate, we constructed a new military station."
+
+ MANDATE_mandate_warmonger:0 "Warmonger"
+ MANDATE_mandate_warmonger_DESC:1 "Use the military might of [Root.Owner.GetName] to fight a war.\n\nReward:\n$mandate_influence_reward_t2$"
+ mandate_warmonger_chain_title:0 "Warmonger Mandate"
+ mandate_warmonger_chain_desc:2 "[This.GetRulerTitle] [This.GetRulerName] was elected on a platform of engaging §YWar§!.\n\nReward:\n$mandate_influence_reward_t2$"
+ war_declared:0 "War Declared"
+ mandate.211.title:0 "Warmonger Mandate Fulfilled"
+ mandate.211.desc:0 "As per [Root.GetRulerTitle] [Root.GetRulerName]'s mandate, the §H[Root.GetName]§! engaged in war."
+
+ mandate.901.title:0 "Test Event"
+ mandate.901.desc:0 "Success!"

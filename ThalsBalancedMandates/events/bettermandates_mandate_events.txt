@@ -1,0 +1,646 @@
+namespace = mandate
+
+@tier1influencecontact = 7
+@tier1influencecontactxenophile = 8
+@tier1influencecontactmin = 20
+@tier1influencecontactmax = 80
+
+@tier2influencecontact = 10
+@tier2influencecontactxenophile = 12
+@tier2influencecontactmin = 40
+@tier2influencecontactmax = 100
+
+@tier1materialreward = 6
+@tier1materialmin = 100
+@tier1materialmax = 500
+@tier2materialreward = 12
+@tier2materialmin = 150
+@tier2materialmax = 1000
+@tier3materialreward = 18
+@tier3materialmin = 250
+@tier3materialmax = 1500
+@tier4materialreward = 24
+@tier4materialmin = 350
+@tier4materialmax = 2000
+@tier5materialreward = 48
+@tier5materialmin = 700
+@tier5materialmax = 4000
+
+@tier1influencereward = 6
+@tier1influencemin = 40
+@tier1influencemax = 100
+@tier2influencereward = 12
+@tier2influencemin = 80
+@tier2influencemax = 175
+@tier3influencereward = 18
+@tier3influencemin = 125
+@tier3influencemax = 250
+@tier4influencereward = 24
+@tier4influencemin = 150
+@tier4influencemax = 300
+@tier5influencereward = 36
+@tier5influencemin = 250
+@tier5influencemax = 500
+@tier6influencereward = 48
+@tier6influencemin = 300
+@tier6influencemax = 600
+
+@tier1researchreward = 6
+@tier1researchmin = 60
+@tier1researchmax = 150
+@tier2researchreward = 12
+@tier2researchmin = 90
+@tier2researchmax = 250
+@tier3researchreward = 18
+@tier3researchmin = 120
+@tier3researchmax = 350
+@tier4researchreward = 24
+@tier4researchmin = 150
+@tier4researchmax = 500
+@tier5researchreward = 48
+@tier5researchmin = 300
+@tier5researchmax = 1000
+
+
+#########################
+# General events
+# id 000
+#########################
+
+# Mandate added
+country_event = {
+	id = mandate.1
+	title = mandate.1.title
+	desc = mandate.1.desc
+	picture = GFX_evt_throne_room
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	# "ruler X elected, check sitch log for their mandate"
+
+	trigger = {
+		exists = ruler
+		ruler = {
+			has_mandate = yes
+		}
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+# Mandate failed/expired
+country_event = {
+	id = mandate.2
+	title = mandate.2.title
+	desc = mandate.2.desc
+	picture = GFX_evt_galactic_senate
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_event_chain = mandate_separatist_chain
+			has_event_chain = mandate_emancipation_chain
+			has_event_chain = mandate_emancipation2_chain
+			has_event_chain = mandate_orbresearch_chain
+			has_event_chain = mandate_miner_chain
+			has_event_chain = mandate_shipwright_chain
+			has_event_chain = mandate_peacemaker_chain
+			has_event_chain = mandate_slaver_chain
+			has_event_chain = mandate_xenopurge_chain
+			has_event_chain = mandate_nationalist_chain
+			has_event_chain = mandate_outpost_chain
+			has_event_chain = mandate_defense_chain
+			has_event_chain = mandate_warmonger_chain
+		}
+	}
+
+	immediate = {
+		switch = {
+			trigger = has_event_chain
+			
+			mandate_separatist_chain = {
+				end_event_chain = mandate_separatist_chain
+			}
+			
+			mandate_emancipation_chain = {
+				end_event_chain = mandate_emancipation_chain
+			}
+			
+			mandate_emancipation2_chain = {
+				end_event_chain = mandate_emancipation2_chain
+			}
+			
+			mandate_orbresearch_chain = {
+				end_event_chain = mandate_orbresearch_chain
+			}
+			
+			mandate_miner_chain = {
+				end_event_chain = mandate_miner_chain
+			}
+			
+			mandate_shipwright_chain = {
+				end_event_chain = mandate_shipwright_chain
+			}
+			
+			mandate_peacemaker_chain = {
+				end_event_chain = mandate_peacemaker_chain
+			}
+			
+			mandate_slaver_chain = {
+				end_event_chain = mandate_slaver_chain
+			}
+			
+			mandate_xenopurge_chain = {
+				end_event_chain = mandate_xenopurge_chain
+				random_owned_planet = {
+					limit = { has_planet_flag = purge_planet }
+					remove_planet_flag = purge_planet
+				}
+			}
+			
+			mandate_nationalist_chain = {
+				end_event_chain = mandate_nationalist_chain
+			}
+			
+			mandate_expansionist_chain = {
+				end_event_chain = mandate_outpost_chain
+			}
+			
+			mandate_defense_chain = {
+				end_event_chain = mandate_defense_chain
+			}
+			
+			mandate_warmonger_chain = {
+				end_event_chain = mandate_warmonger_chain
+			}
+		}
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+# On leader death
+country_event = {
+	id = mandate.21
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		from = {
+			is_same_value = root.ruler
+		}
+	}
+
+	immediate = {
+		country_event = { id = mandate.2 }
+	}
+}
+
+# Removing progress to mandate if you disband a related station
+country_event = {
+	id = mandate.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_event_chain = mandate_miner_chain
+			has_event_chain = mandate_orbresearch_chain
+			has_event_chain = mandate_outpost_chain
+			has_event_chain = mandate_defense_chain
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					from = {
+						is_ship_size = mining_station
+					}
+					AND = {
+						from = {
+							is_ship_size = outpost_station
+							orbit = {
+								OR = {
+									has_resource = {
+										type = energy
+										amount > 0
+									}
+									has_resource = {
+										type = minerals
+										amount > 0
+									}
+								}
+							}
+						}
+					}
+				}
+				has_event_chain = mandate_miner_chain
+			}
+			add_event_chain_counter = { 
+				event_chain = mandate_miner_chain 
+				counter = mining_stations_built
+				amount = -1
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					from = {
+						is_ship_size = outpost_station
+					}
+				}
+				has_event_chain = mandate_outpost_chain
+			}
+			add_event_chain_counter = { 
+				event_chain = mandate_outpost_chain 
+				counter = outpost_stations_built
+				amount = -1
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					from = {
+						is_ship_size = military_station
+					}
+				}
+				has_event_chain = mandate_defense_chain
+			}
+			add_event_chain_counter = { 
+				event_chain = mandate_defense_chain 
+				counter = military_stations_built
+				amount = -1
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					from = {
+						is_ship_size = research_station
+					}
+					AND = {
+						from = {
+							is_ship_size = outpost_station
+							orbit = {
+								OR = {
+									has_resource = {
+										type = physics_research
+										amount > 0
+									}
+									has_resource = {
+										type = society_research
+										amount > 0
+									}
+									has_resource = {
+										type = engineering_research
+										amount > 0
+									}
+								}
+							}
+						}
+					}
+				}
+				has_event_chain = mandate_orbresearch_chain
+			}
+			add_event_chain_counter = { 
+				event_chain = mandate_orbresearch_chain 
+				counter = orbresearch_built
+				amount = -1
+			}
+		} 
+	}
+}
+
+############################
+# Shipwright events
+# id 140
+############################
+ship_event = {
+	id = mandate.140
+	hide_window = yes
+
+	is_triggered_only = yes
+
+
+	trigger = {
+		owner = {
+			has_event_chain = mandate_shipwright_chain
+		}
+	}
+
+	immediate = {
+		owner = {
+			if = {
+				limit = {
+					used_naval_capacity_percent > 0.749
+				}
+				country_event = { id = mandate.141 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = mandate.141
+	title = mandate.141.title
+	desc = mandate.141.desc
+	picture = GFX_evt_federation_fleet
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	immediate = {
+		end_event_chain = mandate_shipwright_chain
+	}
+
+	option = {
+		name = OK
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier5influencereward
+			min = @tier5influencemin
+			max = @tier5influencemax
+		}
+	}
+}
+
+############################
+# Peacemaker events
+# id 160
+############################
+# Check if at peace
+# Root = Winner Warleader
+# From = Loser Warleader
+# FromFrom = War
+country_event = {
+	id = mandate.160
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		fromfrom = {
+			every_war_participant = {
+				limit = {
+					has_event_chain = mandate_peacemaker_chain
+					is_at_war = no
+				}
+				country_event = { id = mandate.161 }
+			}
+		}
+	}
+}
+
+# achieved peace
+country_event = {
+	id = mandate.161
+	title = mandate.161.title
+	desc = mandate.161.desc
+	picture = GFX_evt_throne_room
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	immediate = {
+		end_event_chain = mandate_peacemaker_chain
+	}
+
+	option = {
+		name = OK
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier5influencereward
+			min = @tier5influencemin
+			max = @tier5influencemax
+		}
+	}
+}
+
+
+#########################
+# Expansionist events
+# id 190
+#########################
+# This = construction ship
+# From = planet it is built on
+# Increase Mandated Outpost Station counter when built
+ship_event = {
+	id = mandate.190
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			has_event_chain = mandate_outpost_chain
+		}
+	}
+
+	immediate = {
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = mandate_outpost_chain 
+				counter = outpost_stations_built
+				amount = 1
+			}
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = mandate_outpost_chain
+						counter = outpost_stations_built
+					}
+				}
+				country_event = { id = mandate.191 }
+			}
+		}
+	}
+}
+
+# Mandate fulfilled
+country_event = {
+	id = mandate.191
+	title = mandate.191.title
+	desc = mandate.191.desc
+	picture = GFX_evt_outpost
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	immediate = {
+		end_event_chain = mandate_outpost_chain
+	}
+
+	option = {
+		name = OK
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier5influencereward
+			min = @tier5influencemin
+			max = @tier5influencemax
+		}
+	}
+}
+
+
+#########################
+# Defense events
+# id 200
+#########################
+# This = construction ship
+# From = planet it is built on
+# Increase Mandated Defense Station counter when built
+ship_event = {
+	id = mandate.200
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			has_event_chain = mandate_defense_chain
+		}
+	}
+
+	immediate = {
+		owner = {
+			add_event_chain_counter = { 
+				event_chain = mandate_defense_chain 
+				counter = military_stations_built
+				amount = 1
+			}
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = mandate_defense_chain
+						counter = military_stations_built
+					}
+				}
+				country_event = { id = mandate.201 }
+			}
+		}
+	}
+}
+
+# Mandate fulfilled
+country_event = {
+	id = mandate.201
+	title = mandate.201.title
+	desc = mandate.201.desc
+	picture = GFX_evt_space_station
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	immediate = {
+		end_event_chain = mandate_defense_chain
+	}
+
+	option = {
+		name = OK
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier5influencereward
+			min = @tier5influencemin
+			max = @tier5influencemax
+		}
+	}
+}
+
+
+############################
+# Warmonger events
+# id 210
+############################
+# Check if at war
+country_event = {
+	id = mandate.210
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_event_chain = mandate_warmonger_chain
+	}
+
+	immediate = {
+		if = {
+			limit = { is_at_war = yes }
+			country_event = { id = mandate.211 }
+		}
+	}
+}
+
+# Mandate fulfilled
+country_event = {
+	id = mandate.211
+	title = mandate.211.title
+	desc = mandate.211.desc
+	picture = GFX_evt_fleet_evil
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_event_chain = mandate_warmonger_chain
+	}
+
+	immediate = {
+		end_event_chain = mandate_warmonger_chain
+	}
+
+	option = {
+		name = OK
+		add_monthly_resource_mult = {
+			resource = influence
+			value = @tier5influencereward
+			min = @tier5influencemin
+			max = @tier5influencemax
+		}
+	}
+}
+
+
+
+############################
+# Test events
+# id 900
+############################
+# This = construction ship
+# From = planet it is built on
+ship_event = {
+	id = mandate.900
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			#country_event = { id = mandate.901 }
+		}
+	}
+}
+
+# Mandate fulfilled
+country_event = {
+	id = mandate.901
+	title = mandate.901.title
+	desc = mandate.901.desc
+	picture = GFX_evt_space_station
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+	}
+}

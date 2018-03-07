@@ -1,0 +1,820 @@
+# Every pop in your empire looks at available mandates, and assigns Vote Share based on the weights below.
+
+#*** Orbital Researcher, build X research stations. on_building_research_station
+mandate_orbital_researcher = {
+	valid = {
+		exists = owner
+		owner = { has_technology = tech_space_construction }
+	}
+	parameters = {}
+
+	# This = Voting pop in empire
+	# From = Leader with mandate
+	vote_weight = {
+		base = 10
+		# Low Research Income
+		modifier = {
+			add = 5
+			owner = {
+				has_monthly_income = {
+					resource = engineering_research
+					value < 16
+				}
+			}
+		}
+		modifier = {
+			add = 5
+			owner = {
+				has_monthly_income = {
+					resource = physics_research
+					value < 16
+				}
+			}
+		}
+		modifier = {
+			add = 5
+			owner = {
+				has_monthly_income = {
+					resource = society_research
+					value < 16
+				}
+			}
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+	on_term_started = {
+		owner = {
+			if = {
+				limit = { has_event_chain = mandate_orbresearch_chain }
+				end_event_chain = mandate_orbresearch_chain
+			}
+			begin_event_chain = {
+				event_chain = "mandate_orbresearch_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +300 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.2 }
+		}
+	}
+}
+
+#*** Miner, build X mining stations. on_building_mining_station on-action
+mandate_miner = {
+	valid = {
+		exists = owner
+		owner = { has_technology = tech_space_construction }
+	}
+	parameters = {}
+
+	vote_weight = {
+		base = 10
+		# Low Mineral Income
+		modifier = {
+			add = 10
+			owner = {
+				has_monthly_income = {
+					resource = minerals
+					value < 20
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			owner = {
+				has_monthly_income = {
+					resource = minerals
+					value < 50
+				}
+			}
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+
+	on_term_started = {
+		owner = {
+			if = {
+				limit = { has_event_chain = mandate_miner_chain }
+				end_event_chain = mandate_miner_chain
+			}
+			begin_event_chain = {
+				event_chain = "mandate_miner_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +300 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.2 }
+		}
+	}
+}
+
+# Peacemaker Mandate, start no new wars
+mandate_peacemaker = {
+	valid = {
+		exists = owner
+		owner = {
+			is_at_war = yes
+			is_war_leader = yes
+		}
+	}
+
+	parameters = {
+		self = country
+		enemy = country
+	}
+
+	vote_weight = {
+		base = 10
+		# No Federation
+		modifier = {
+			add = 10
+			owner = {
+				has_federation = no
+			}
+		}
+		# Small navy
+		modifier = {
+			add = 10
+			owner = {
+				used_naval_capacity_percent < 0.50
+			}
+		}
+		# Pacifist
+		modifier = {
+			add = 20
+			owner = { has_ethic = ethic_pacifist }
+		}
+		# Fanatic Pacifist
+		modifier = {
+			add = 40
+			owner = { has_ethic = ethic_fanatic_pacifist }
+		}
+		# Militarist
+		modifier = {
+			factor = 0.75
+			owner = { has_ethic = ethic_militarist }
+		}
+		# Fanatic Militarist
+		modifier = {
+			factor = 0.5
+			owner = { has_ethic = ethic_fanatic_militarist }
+		}
+		# Personal Support
+		modifier = {
+			add = 20
+			pop_has_ethic = ethic_pacifist
+		}
+		modifier = {
+			factor = 0.5
+			pop_has_ethic = ethic_militarist
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+
+	on_term_started = {
+		owner = {
+			begin_event_chain = {
+				event_chain = "mandate_peacemaker_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +300 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.160 }
+			#country_event = { id = mandate.2 }
+		}
+	}
+}
+
+#*** Shipwright, build X ships by year Y. count_ships trigger
+mandate_shipwright = {
+	valid = {
+		exists = owner
+		owner = {
+			used_naval_capacity_percent < 0.75
+		}
+	}
+	parameters = {}
+
+	vote_weight = {
+		base = 40
+		# Personal Support
+		modifier = {
+			add = 40
+			pop_has_ethic = ethic_militarist
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+
+	on_term_started = {
+		owner = {
+			begin_event_chain = {
+				event_chain = "mandate_shipwright_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +500 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.140 }
+			#country_event = { id = mandate.2 }
+		}
+	}
+}
+
+#*** Expansionist, build X frontier outposts. on_building_outpost_station on-action
+mandate_outpost = {
+	valid = {
+		exists = owner
+		owner = {
+			has_technology = tech_space_construction
+		}
+	}
+	parameters = {}
+
+	# This = Pop
+	# From = Leader
+	vote_weight = {
+		base = 10
+		# Good Influence Income
+		modifier = {
+			add = 10
+			owner = {
+				has_monthly_income = {
+					resource = influence
+					value > 1
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			owner = {
+				has_monthly_income = {
+					resource = influence
+					value > 2
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			owner = {
+				has_monthly_income = {
+					resource = influence
+					value > 3
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			owner = {
+				has_monthly_income = {
+					resource = influence
+					value > 4
+				}
+			}
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+
+	on_term_started = {
+		owner = {
+			if = {
+				limit = { has_event_chain = mandate_outpost_chain }
+				end_event_chain = mandate_outpost_chain
+			}
+			begin_event_chain = {
+				event_chain = "mandate_outpost_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +300 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.2 }
+		}
+	}
+}
+
+#*** Defender, build X military stations. on_building_military_station on-action
+mandate_defense = {
+	valid = {
+		exists = owner
+		owner = {
+			has_technology = tech_space_defense_station_1
+		}
+	}
+	parameters = {}
+
+	vote_weight = {
+		base = 20
+		# Hostile contact
+		modifier = {
+			add = 5
+			owner = {
+				any_country = {
+					OR = {
+						is_hostile_to = owner
+						is_domineering_to = owner
+						is_rival = owner
+					}
+				}
+			}
+		}
+		# Hostile neighbor
+		modifier = {
+			add = 10
+			owner = {
+				any_neighbor_country = {
+					OR = {
+						is_hostile_to = owner
+						is_domineering_to = owner
+						is_rival = owner
+					}
+				}
+			}
+		}
+		# Large empire
+		modifier = {
+			add = 5
+			owner = {
+				num_owned_planets > 1
+			}
+		}
+		modifier = {
+			add = 5
+			owner = {
+				num_owned_planets > 5
+			}
+		}
+		modifier = {
+			add = 5
+			owner = {
+				num_owned_planets > 10
+			}
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+
+	on_term_started = {
+		owner = {
+			if = {
+				limit = { has_event_chain = mandate_defense_chain }
+				end_event_chain = mandate_defense_chain
+			}
+			begin_event_chain = {
+				event_chain = "mandate_defense_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +300 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.2 }
+		}
+	}
+}
+
+#*** Warmonger, start a new war
+mandate_warmonger = {
+	valid = {
+		exists = owner
+		owner = {
+			has_federation = no
+			NOT = { has_policy_flag = no_wars }
+		}
+	}
+
+	parameters = {
+		self = country
+		enemy = country
+	}
+
+	vote_weight = {
+		base = 20
+		# Large navy
+		modifier = {
+			add = 10
+			owner = {
+				used_naval_capacity_percent > 0.75
+			}
+		}
+		modifier = {
+			add = 10
+			owner = {
+				used_naval_capacity_percent > 1.00
+			}
+		}
+		# Hostile contact
+		modifier = {
+			add = 10
+			owner = {
+				any_country = {
+					OR = {
+						is_hostile_to = owner
+						is_domineering_to = owner
+						is_rival = owner
+					}
+				}
+			}
+		}
+		# Hostile neighbor
+		modifier = {
+			add = 10
+			owner = {
+				any_neighbor_country = {
+					OR = {
+						is_hostile_to = owner
+						is_domineering_to = owner
+						is_rival = owner
+					}
+				}
+			}
+		}
+		# Militarist
+		modifier = {
+			add = 20
+			owner = { has_ethic = ethic_militarist }
+		}
+		# Fanatic Militarist
+		modifier = {
+			add = 40
+			owner = { has_ethic = ethic_fanatic_militarist }
+		}
+		# Pacifist
+		modifier = {
+			add = 0.5
+			owner = { has_ethic = ethic_pacifist }
+		}
+		# Fanatic Pacifist
+		modifier = {
+			add = 0.25
+			owner = { has_ethic = ethic_fanatic_pacifist }
+		}
+		# Personal Support
+		modifier = {
+			add = 20
+			pop_has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 0.5
+			pop_has_ethic = ethic_pacifist
+		}
+		# Leader of my faction
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = supremacist }
+			from = { leader_of_faction = supremacist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = traditionalist }
+			from = { leader_of_faction = traditionalist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = progressive }
+			from = { leader_of_faction = progressive }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = imperialist }
+			from = { leader_of_faction = imperialist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = isolationist }
+			from = { leader_of_faction = isolationist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = technologist }
+			from = { leader_of_faction = technologist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = totalitarian }
+			from = { leader_of_faction = totalitarian }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = xenoist }
+			from = { leader_of_faction = xenoist }
+		}
+		modifier = {
+			add = 40
+			pop_faction = { is_pop_faction_type = prosperity }
+			from = { leader_of_faction = prosperity }
+		}
+	}
+
+	on_term_started = {
+		owner = {
+			begin_event_chain = {
+				event_chain = "mandate_warmonger_chain"
+				target = this
+			}
+			# Detail event chain reward in comment here:
+			# +300 Influence
+		}
+	}
+
+	on_term_ended = {
+		owner = {
+			country_event = { id = mandate.160 }
+			#country_event = { id = mandate.2 }
+		}
+	}
+}

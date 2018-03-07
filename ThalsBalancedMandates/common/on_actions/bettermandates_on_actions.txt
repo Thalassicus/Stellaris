@@ -1,0 +1,92 @@
+# This = owner of fleet
+# From = disbanded fleet
+on_fleet_disbanded = {
+	events = {
+		#mandate.3 #removes mandate progress if you disband a related station
+		guardian.1071 #removes modifier if you have a station in orbit of pantagruel
+	}
+}
+
+# This = construction ship
+# From = planet it is built on
+# Fires when construction is complete,
+# immediately before station is created
+on_building_outpost_station = {
+	events = {
+		tutorial.76
+		tutorial.750
+		tutorial.56
+		mandate.110
+		mandate.120
+		mandate.190
+		guardian.1070
+		factions.220
+	}
+}
+
+# This = construction ship
+# Fires when construction is complete,
+# immediately before station is created
+on_building_military_station_small = {
+	events = {
+		mandate.200
+		mandate.900
+	}
+}
+on_building_military_station_medium = {
+	events = {
+		mandate.200
+	}
+}
+on_building_military_station_large = {
+	events = {
+		mandate.200
+	}
+}
+
+# From = planet it is built on
+# Fires when construction is complete,
+# immediately before station is created
+on_building_orbital_station = {
+	events = {
+		mandate.900
+	}
+}
+
+# A ship has been built
+# Root = Ship
+# From = Planet
+on_ship_built = {
+	events = {
+		tutorial.40
+		tutorial.8
+		tutorial.21
+		tutorial.25
+		mandate.140
+	}
+}
+
+# A war is beginning, executed for every country in the war.
+# Root = Country
+# From = War
+on_war_beginning = {
+	events = {
+		action.41
+		#diplomatic.1002
+		factions.13
+		mandate.210
+	}
+}
+
+# A war has been won
+# Root = Winner Warleader
+# From = Loser Warleader
+# FromFrom = War
+on_war_won = {
+	events = {
+		action.32
+		action.44
+		#factions.205 # Imperialist Conquest
+		mandate.160
+	}
+}

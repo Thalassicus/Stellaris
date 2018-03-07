@@ -1,0 +1,72 @@
+tech_mega_engineering = {
+	area = engineering
+	cost = @tier4weight1
+	tier = 3
+	category = { voidcraft }
+	ai_update_type = all
+	prerequisites = { "tech_space_defense_station_3" }
+	weight = @tier4weight1
+	is_rare = yes
+	
+	modifier = {
+		max_minerals = 20000
+		planet_building_build_speed_mult = 0.5
+	}
+	
+	weight_modifier = {
+		factor = 0.25
+		modifier = {
+			factor = 0.5
+			NOR = {
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_expertise_voidcraft"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_curator"
+				}
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_maniacal"
+				}				
+				research_leader = {
+					area = engineering
+					has_trait = "leader_trait_genius"
+				}				
+			}
+		}
+		modifier = {
+			factor = 5
+			has_ascension_perk = ap_voidborn
+		}		
+		modifier = {
+			factor = 10
+			has_ascension_perk = ap_master_builders
+		}
+		modifier = {
+			factor = 20
+			has_any_megastructure_in_empire = yes
+		}
+
+		### Enabled for Vanilla so people can repair damaged Ring Worlds
+		#modifier = {
+		#	factor = 0
+		#	NOT = { 
+		#		host_has_dlc = "Utopia" 
+		#	}
+		#}
+	}
+	
+	ai_weight = {
+		factor = 1.25 #important component
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_voidcraft"
+			}
+		}
+	}
+}
+
